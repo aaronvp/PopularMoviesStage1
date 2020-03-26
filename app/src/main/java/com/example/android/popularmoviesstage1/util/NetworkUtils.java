@@ -19,7 +19,8 @@ public class NetworkUtils {
     private static final String MOVIE_DB_BASE_URL = "https://api.themoviedb.org/3/discover/movie?";
     private static final String IMAGE_BASE_URL = "https://image.tmdb.org/t/p/";
     private static final String PARAM_API_KEY = "api_key";
-    private static final String MOVIE_DB_API_KEY = "ad1c171169a375e3f17a00d59419b0cd";
+    // Add in API key here
+    private static final String MOVIE_DB_API_KEY = "xxxxxx";
     public static final String MOVIE_POSTER_SIZE = "w185";
     private static final String PARAM_SORT = "sort_by";
     private static final String PARAM_PAGE = "page";
