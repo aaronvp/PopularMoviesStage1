@@ -21,7 +21,8 @@ public class NetworkUtils {
     private static final String PARAM_API_KEY = "api_key";
     // Add in API key here
     private static final String MOVIE_DB_API_KEY = "xxxxxx";
-    public static final String MOVIE_POSTER_SIZE = "w185";
+    public static final String MOVIE_POSTER_SIZE = "w182";
+    public static final String MOVIE_THUMBNAIL_SIZE = "w185";
     private static final String PARAM_SORT = "sort_by";
     private static final String PARAM_PAGE = "page";
     static final String PAGE = "1";
