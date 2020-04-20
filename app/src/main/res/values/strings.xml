@@ -1,12 +1,16 @@
 <resources>
-    <string name="app_name">Popular Movies</string>
-    <string name="menu_sort_by">Sort By</string>
-    <string name="menu_sort_by_highest_rate">Highest Rated</string>
-    <string name="menu_sort_by_most_popular">Most Popular</string>
+	<string name="app_name">Popular Movies</string>
+	<string name="menu_sort_by">Sort By</string>
+	<string name="menu_sort_by_highest_rate">Highest Rated</string>
+	<string name="menu_sort_by_most_popular">Most Popular</string>
+	<string name="menu_sort_by_favourites">Favourites</string>
 	<string name="title_activity_movie_details">MovieDetails</string>
 	<string name="detail_error_message">Movie details not available</string>
-	<string name="detail_rating">Rating :</string>
-	<string name="detail_released">Released :</string>
 	<string name="error_loading_movies">Unable to load movies. Check Internet connection</string>
 	<string name="poster_image">Movie Poster</string>
+
+	<string name="trailers">Trailers</string>
+	<string name="reviews">Reviews</string>
+
+	<string name="rating_total"> / 10</string>
 </resources>
