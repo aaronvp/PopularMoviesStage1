@@ -106,7 +106,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.List
     @Override
     public void onListItemClick(int clickedItemIndex) {
         Movie movie = movies.get(clickedItemIndex);
-        Intent intent = new Intent(context, Details.class);
+        Intent intent = new Intent(context, MovieDetails.class);
         intent.putExtra(ApplicationConstants.INTENT_KEY_MOVIE, movie);
         startActivity(intent);
     }
@@ -125,7 +125,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.List
             URL searchUrl = params[0];
             String movieSearchResults = null;
             try {
-                Log.i("Movies", "Fetching Movies from TheMovieDB");
+                Log.i(TAG, "Fetching Movies from TheMovieDB");
                 movieSearchResults = NetworkUtils.getResponseFromHttpUrl(searchUrl);
             } catch (IOException e) {
                 Log.e(TAG, Objects.requireNonNull(e.getMessage()));
@@ -155,7 +155,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.List
     }
 
     private void makeMovieSearchQuery(String sortBy) {
-        URL movieSearchURL = NetworkUtils.buildUrl(sortBy);
+        URL movieSearchURL = NetworkUtils.buildFetchMoviesUrl(sortBy);
         new FetchMovies().execute(movieSearchURL);
     }
 

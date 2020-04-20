@@ -33,14 +33,12 @@ import java.util.Objects;
  */
 public class ReviewFragment extends Fragment {
 
-    RecyclerView reviewRecyclerView;
-    ReviewAdapter reviewAdapter;
-    ReviewList reviewList;
+    private ReviewAdapter reviewAdapter;
 
     private static final String MOVIE_REVIEWS_EXTRA = "movie_reviews";
     private static final int FETCH_REVIEWS_LOADER = 23;
     
-    int movieId;
+    private final int movieId;
 
     public ReviewFragment(int movieId) {
         this.movieId = movieId;
@@ -56,7 +54,7 @@ public class ReviewFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        reviewRecyclerView = view.findViewById(R.id.rv_reviews);
+        RecyclerView reviewRecyclerView = view.findViewById(R.id.rv_reviews);
         reviewAdapter = new ReviewAdapter();
         reviewRecyclerView.setAdapter(reviewAdapter);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
@@ -67,10 +65,11 @@ public class ReviewFragment extends Fragment {
     } 
 
     private void getReviews() {
+        Log.i("Movies", "Fetching Reviews");
         URL movieReviewsURL = NetworkUtils.buildReviewsURL(movieId);
         Bundle bundle = new Bundle();
         bundle.putString(MOVIE_REVIEWS_EXTRA, movieReviewsURL.toString());
-        LoaderManager loaderManager = getActivity().getSupportLoaderManager();
+        LoaderManager loaderManager = Objects.requireNonNull(getActivity()).getSupportLoaderManager();
         Loader<String> movieTrailersLoader = loaderManager.getLoader(FETCH_REVIEWS_LOADER);
         if (movieTrailersLoader == null) {
             loaderManager.initLoader(FETCH_REVIEWS_LOADER, bundle, new ReviewsCallBack());
@@ -84,7 +83,7 @@ public class ReviewFragment extends Fragment {
         @NonNull
         @Override
         public Loader<String> onCreateLoader(int i, final Bundle bundle) {
-            return new AsyncTaskLoader<String>(getContext()) {
+            return new AsyncTaskLoader<String>(Objects.requireNonNull(getContext())) {
 
                 String movieReviewsJson;
 
@@ -133,7 +132,7 @@ public class ReviewFragment extends Fragment {
                 GsonBuilder gsonBuilder = new GsonBuilder();
                 Gson gson = gsonBuilder.create();
                 try {
-                    reviewList = gson.fromJson(reviews, ReviewList.class);
+                    ReviewList reviewList = gson.fromJson(reviews, ReviewList.class);
                     reviewAdapter.setReviewData(reviewList.reviews);
                 } catch (Exception e) {
                     Log.e("Error", Objects.requireNonNull(e.getMessage()));

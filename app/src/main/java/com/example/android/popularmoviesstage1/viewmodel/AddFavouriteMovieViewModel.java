@@ -8,7 +8,7 @@ import com.example.android.popularmoviesstage1.model.Movie;
 
 public class AddFavouriteMovieViewModel extends ViewModel {
 
-    private LiveData<Movie> favouriteMovie;
+    private final LiveData<Movie> favouriteMovie;
 
     public AddFavouriteMovieViewModel(AppDatabase database, int movieId) {
         favouriteMovie = database.movieDao().loadMovieById(movieId);

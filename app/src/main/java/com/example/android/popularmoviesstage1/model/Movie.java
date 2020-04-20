@@ -13,7 +13,7 @@ import lombok.Data;
 @Data
 public class Movie implements Parcelable {
 
-    @PrimaryKey(autoGenerate = false)
+    @PrimaryKey
     @SerializedName("id")
     private int id;
     @SerializedName("overview")

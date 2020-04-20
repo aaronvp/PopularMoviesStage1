@@ -37,16 +37,18 @@ public class AppExecutors {
         return diskIO;
     }
 
+    @SuppressWarnings("unused")
     public Executor mainThread() {
         return mainThread;
     }
 
+    @SuppressWarnings("unused")
     public Executor networkIO() {
         return networkIO;
     }
 
     private static class MainThreadExecutor implements Executor {
-        private Handler mainThreadHandler = new Handler(Looper.getMainLooper());
+        private final Handler mainThreadHandler = new Handler(Looper.getMainLooper());
 
         @Override
         public void execute(@NonNull Runnable command) {

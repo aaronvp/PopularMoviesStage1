@@ -26,7 +26,6 @@ public class NetworkUtils {
     // Add in API key here
     private static final String MOVIE_DB_API_KEY = "ad1c171169a375e3f17a00d59419b0cd";
     public static final String MOVIE_POSTER_SIZE = "w500";
-    public static final String MOVIE_THUMBNAIL_SIZE = "w185";
     private static final String PARAM_SORT = "sort_by";
     private static final String PARAM_PAGE = "page";
     private static final String PARAM_VIDEOS = "videos";
@@ -43,7 +42,7 @@ public class NetworkUtils {
      *
      * @return The URL to use to query the GitHub server.
      */
-    public static URL buildUrl(String sortBy) {
+    public static URL buildFetchMoviesUrl(String sortBy) {
         Uri builtUri = Uri.parse(MOVIE_DB_DISCOVER_URL).buildUpon()
                 .appendQueryParameter(PARAM_API_KEY, MOVIE_DB_API_KEY)
                 .appendQueryParameter(PARAM_SORT, sortBy)
@@ -76,24 +75,17 @@ public class NetworkUtils {
     }
 
     public static URL buildTrailersURL(int movieId) {
-        Uri builtUri = Uri.parse(MOVIE_DB_BASE_URL).buildUpon()
-                .appendPath(String.valueOf(movieId))
-                .appendEncodedPath(PARAM_VIDEOS)
-                .appendQueryParameter(PARAM_API_KEY, MOVIE_DB_API_KEY)
-                .build();
-        URL url = null;
-        try {
-            url = new URL(builtUri.toString());
-        } catch (MalformedURLException e) {
-            Log.e(TAG, Objects.requireNonNull(e.getMessage()));
-        }
-        return url;
+        return buildMovieDetailURL(movieId, PARAM_VIDEOS);
     }
 
     public static URL buildReviewsURL(int movieId) {
+        return buildMovieDetailURL(movieId, PARAM_REVIEWS);
+    }
+
+    private static URL buildMovieDetailURL(int movieId, String movieDetail) {
         Uri builtUri = Uri.parse(MOVIE_DB_BASE_URL).buildUpon()
                 .appendPath(String.valueOf(movieId))
-                .appendEncodedPath(PARAM_REVIEWS)
+                .appendEncodedPath(movieDetail)
                 .appendQueryParameter(PARAM_API_KEY, MOVIE_DB_API_KEY)
                 .build();
         URL url = null;

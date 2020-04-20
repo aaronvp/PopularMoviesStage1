@@ -34,14 +34,13 @@ import java.util.Objects;
  */
 public class TrailerFragment extends Fragment implements TrailerAdapter.ListItemClickListener {
 
-    RecyclerView trailerRecyclerView;
-    TrailerAdapter trailerAdapter;
-    TrailerList trailerList;
+    private TrailerAdapter trailerAdapter;
+    private TrailerList trailerList;
 
     private static final String MOVIE_TRAILERS_EXTRA = "movie_trailers";
     private static final int FETCH_TRAILERS_LOADER = 22;
 
-    private int movieId;
+    private final int movieId;
 
     public TrailerFragment(int movieId) {
         this.movieId = movieId;
@@ -57,7 +56,7 @@ public class TrailerFragment extends Fragment implements TrailerAdapter.ListItem
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        trailerRecyclerView = view.findViewById(R.id.rv_trailers);
+        RecyclerView trailerRecyclerView = view.findViewById(R.id.rv_trailers);
         trailerAdapter = new TrailerAdapter(this);
         trailerRecyclerView.setAdapter(trailerAdapter);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
@@ -70,14 +69,15 @@ public class TrailerFragment extends Fragment implements TrailerAdapter.ListItem
     @Override
     public void onListItemClick(int clickedItemIndex) {
         Trailer trailer = trailerList.trailers.get(clickedItemIndex);
-        NetworkUtils.openWebPage(getContext(), NetworkUtils.getYouTubeURL(trailer.getKey()));
+        NetworkUtils.openWebPage(Objects.requireNonNull(getContext()), NetworkUtils.getYouTubeURL(trailer.getKey()));
     }
 
     private void getTrailers() {
+        Log.i("Movies", "Fetching Trailers");
         URL movieTrailersURL = NetworkUtils.buildTrailersURL(movieId);
         Bundle bundle = new Bundle();
         bundle.putString(MOVIE_TRAILERS_EXTRA, movieTrailersURL.toString());
-        LoaderManager loaderManager = getActivity().getSupportLoaderManager();
+        LoaderManager loaderManager = Objects.requireNonNull(getActivity()).getSupportLoaderManager();
         Loader<String> movieTrailersLoader = loaderManager.getLoader(FETCH_TRAILERS_LOADER);
         if (movieTrailersLoader == null) {
             loaderManager.initLoader(FETCH_TRAILERS_LOADER, bundle, new TrailersCallBack());
@@ -91,7 +91,7 @@ public class TrailerFragment extends Fragment implements TrailerAdapter.ListItem
         @NonNull
         @Override
         public Loader<String> onCreateLoader(int i, final Bundle bundle) {
-            return new AsyncTaskLoader<String>(getContext()) {
+            return new AsyncTaskLoader<String>(Objects.requireNonNull(getContext())) {
 
                 String movieTrailersJson;
 
@@ -141,7 +141,6 @@ public class TrailerFragment extends Fragment implements TrailerAdapter.ListItem
                 Gson gson = gsonBuilder.create();
                 try {
                     trailerList = gson.fromJson(trailers, TrailerList.class);
-                    Log.i("Movies", "Setting trailer adapter : " + trailerList.trailers.size());
                     trailerAdapter.setTrailerData(trailerList.trailers);
                 } catch (Exception e) {
                     Log.e("Error", Objects.requireNonNull(e.getMessage()));

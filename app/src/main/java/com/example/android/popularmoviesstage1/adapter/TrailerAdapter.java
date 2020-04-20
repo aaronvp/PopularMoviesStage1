@@ -43,7 +43,6 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.TrailerV
     /**
      * Caching of the children views for a Movie item
      */
-    @SuppressWarnings("deprecation")
     class TrailerViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         final TextView textViewTrailer;

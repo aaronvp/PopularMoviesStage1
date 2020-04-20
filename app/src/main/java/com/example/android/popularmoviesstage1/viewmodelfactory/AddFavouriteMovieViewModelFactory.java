@@ -1,6 +1,7 @@
 
 package com.example.android.popularmoviesstage1.viewmodelfactory;
 
+import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 import com.example.android.popularmoviesstage1.database.AppDatabase;
@@ -19,9 +20,10 @@ public class AddFavouriteMovieViewModelFactory extends ViewModelProvider.NewInst
     }
 
     // COMPLETED (4) Uncomment the following method
+    @NonNull
     @Override
-    public <T extends ViewModel> T create(Class<T> modelClass) {
-        //noinspection unchecked
+    public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
+        // noinspection unchecked
         return (T) new AddFavouriteMovieViewModel(movieDatabase, movieId);
     }
 }

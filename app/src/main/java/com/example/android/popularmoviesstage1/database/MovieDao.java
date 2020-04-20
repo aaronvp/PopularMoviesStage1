@@ -18,9 +18,6 @@ public interface MovieDao {
     @Insert
     void insertMovie(Movie movie);
 
-    @Update(onConflict = OnConflictStrategy.REPLACE)
-    void updateMovie(Movie movie);
-
     @Delete
     void deleteMovie(Movie movie);
 

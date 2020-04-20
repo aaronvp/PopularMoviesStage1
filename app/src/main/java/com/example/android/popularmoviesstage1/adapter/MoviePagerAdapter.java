@@ -9,7 +9,7 @@ import com.example.android.popularmoviesstage1.fragment.TrailerFragment;
 
 public class MoviePagerAdapter extends FragmentStateAdapter {
 
-    int movieId;
+    private final int movieId;
 
     public MoviePagerAdapter(@NonNull FragmentActivity fragmentActivity, int movieId) {
         super(fragmentActivity);

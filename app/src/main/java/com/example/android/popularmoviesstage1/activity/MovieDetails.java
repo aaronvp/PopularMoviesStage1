@@ -1,8 +1,8 @@
 package com.example.android.popularmoviesstage1.activity;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
@@ -15,7 +15,7 @@ import com.bumptech.glide.Glide;
 import com.example.android.popularmoviesstage1.R;
 import com.example.android.popularmoviesstage1.adapter.MoviePagerAdapter;
 import com.example.android.popularmoviesstage1.database.AppDatabase;
-import com.example.android.popularmoviesstage1.databinding.DetailsBinding;
+import com.example.android.popularmoviesstage1.databinding.MovieDetailsBinding;
 import com.example.android.popularmoviesstage1.model.Movie;
 import com.example.android.popularmoviesstage1.util.AppExecutors;
 import com.example.android.popularmoviesstage1.util.ApplicationConstants;
@@ -25,21 +25,18 @@ import com.example.android.popularmoviesstage1.viewmodelfactory.AddFavouriteMovi
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
-@SuppressWarnings("deprecation")
-public class Details extends AppCompatActivity {
+public class MovieDetails extends AppCompatActivity {
 
     Movie movie;
-    DetailsBinding movieDetailBinding;
+    MovieDetailsBinding movieDetailBinding;
     private AppDatabase movieDatabase;
-
-    Context context = this;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.details);
-        movieDatabase = AppDatabase.getInstance(context);
-        movieDetailBinding = DataBindingUtil.setContentView(this, R.layout.details);
+        setContentView(R.layout.movie_details);
+        movieDatabase = AppDatabase.getInstance(this);
+        movieDetailBinding = DataBindingUtil.setContentView(this, R.layout.movie_details);
 
         Intent intent = getIntent();
         if (intent == null) {
@@ -47,13 +44,16 @@ public class Details extends AppCompatActivity {
         } else {
             if (intent.hasExtra(ApplicationConstants.INTENT_KEY_MOVIE)) {
                 this.movie = intent.getParcelableExtra(ApplicationConstants.INTENT_KEY_MOVIE);
+                if (movie == null) {
+                    closeOnError();
+                }
                 movieDetailBinding.detailMovieTitle.setText(movie.getTitle());
                 Glide.with(this)
                         .load(NetworkUtils.buildImageUrl(movie.getPosterPath()))
                         .placeholder(R.drawable.large_movie_poster)
                         .into(movieDetailBinding.detailMoviePoster);
                 movieDetailBinding.detailMovieYear.setText(movie.getReleaseDate());
-                movieDetailBinding.detailMovieRating.setText(movie.getVoteAverage().toString() + " / 10");
+                movieDetailBinding.detailMovieRating.setText(getMovieRating(movie.getVoteAverage()));
                 movieDetailBinding.detailOverview.setText(movie.getOverview());
 
                 AddFavouriteMovieViewModelFactory movieViewModelFactory =
@@ -63,15 +63,19 @@ public class Details extends AppCompatActivity {
                 movieViewModel.getFavouriteMovie().observe(this, new Observer<Movie>() {
                     @Override
                     public void onChanged(Movie movie) {
+                        Log.i("MovieDB", "Movie " + (movie == null));
                         movieViewModel.getFavouriteMovie().removeObserver(this);
-                        movieDetailBinding.favButton.setChecked(true);
+                        if (movie != null) {
+                            movieDetailBinding.favButton.setChecked(true);
+                        }
                     }
                 });
 
                 movieDetailBinding.favButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        onFavouriteButtonClicked(movieDetailBinding.favButton.isChecked(), movie);
+                        boolean saveMovie = movieDetailBinding.favButton.isChecked();
+                        onFavouriteButtonClicked(saveMovie, movie);
                     }
                 });
 
@@ -117,12 +121,20 @@ public class Details extends AppCompatActivity {
             @Override
             public void run() {
                 if (save) {
+                    Log.i("MovieDB", "Save : " + movie.getTitle());
                     movieDatabase.movieDao().insertMovie(movie);
                 } else {
+                    Log.i("MovieDB", "Delete : " + movie.getTitle());
                     movieDatabase.movieDao().deleteMovie(movie);
                 }
             }
         });
+    }
+
+    private String getMovieRating(Double rating) {
+        if (rating != null) {
+            return String.valueOf(rating).concat(getString(R.string.rating_total));
+        } else return "n/a";
     }
 
 }
