@@ -1,6 +1,7 @@
 package com.example.android.popularmoviesstage1.adapter;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,14 +13,13 @@ import com.bumptech.glide.Glide;
 import com.example.android.popularmoviesstage1.util.NetworkUtils;
 import com.example.android.popularmoviesstage1.R;
 import com.example.android.popularmoviesstage1.model.Movie;
-import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
 
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHolder> {
 
     Context context;
-    List<Movie> movies;
+    private List<Movie> movies;
 
     private final ListItemClickListener listItemClickListener;
 
@@ -64,7 +64,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
         }
 
         void bind(Movie movie) {
-            if (!StringUtils.isEmpty(movie.getPosterPath())) {
+            if (!TextUtils.isEmpty(movie.getPosterPath())) {
                 Glide.with(this.itemView)
                         .load(NetworkUtils.buildImageUrl(movie.getPosterPath()))
                         .placeholder(R.drawable.large_movie_poster)
@@ -73,7 +73,6 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
                 movieThumbnail.setVisibility(View.GONE);
                 missingPoster.setVisibility(View.VISIBLE);
                 missingPoster.setText(movie.getTitle());
-
             }
         }
 
