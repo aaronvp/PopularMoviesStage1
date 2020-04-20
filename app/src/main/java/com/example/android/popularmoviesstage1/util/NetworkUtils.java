@@ -24,7 +24,7 @@ public class NetworkUtils {
     private static final String YOUTUBE_BASE_URL = "https://www.youtube.com/watch?v=";
     private static final String PARAM_API_KEY = "api_key";
     // Add in API key here
-    private static final String MOVIE_DB_API_KEY = "ad1c171169a375e3f17a00d59419b0cd";
+    private static final String MOVIE_DB_API_KEY = "";
     public static final String MOVIE_POSTER_SIZE = "w500";
     private static final String PARAM_SORT = "sort_by";
     private static final String PARAM_PAGE = "page";
